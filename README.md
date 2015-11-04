@@ -20,6 +20,7 @@ The project utilized a bit of SQL Server Management Objects (SMO) magic to autom
 
 ##Example command line to run tool
 SqlAzureBakMaker.exe -SourceServer "" -SourceUser "" -SourcePassword "" -SourceDatabase "" -DestinationServer "." -DestinationUser "" -DestinationPassword "" -DestinationDatabase "" -StorageAccountName "" -StorageContainer "" -StorageFileBase "" -StorageKey "" -MdfFile ""
+
 (fill in the stuff between the quotes)
 
 ##How it was tested
