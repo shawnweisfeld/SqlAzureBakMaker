@@ -46,5 +46,9 @@ namespace SqlAzureBakMaker
         [ArgRequired(PromptIfMissing = true)]
         public string StorageKey { get; set; }
 
+        [ArgRequired(PromptIfMissing = true)]
+        public string MdfFile { get; set; }
+
+
     }
 }

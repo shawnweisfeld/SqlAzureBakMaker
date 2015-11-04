@@ -21,6 +21,7 @@ namespace SqlAzureBakMaker
                 BackupMaker.CreateConnection(parms.SourceServer, parms.SourceUser, parms.SourcePassword), parms.SourceDatabase,
                 BackupMaker.CreateConnection(parms.DestinationServer, parms.DestinationUser, parms.DestinationPassword), parms.DestinationDatabase,
                 true,
+                parms.MdfFile,
                 new SqlBackupInfo()
                 {
                     StorageAccountName = parms.StorageAccountName,

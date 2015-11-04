@@ -17,7 +17,7 @@ namespace SqlAzureBakMaker
         public static void CopyDatabase(
             ServerConnection sourceServerConnection, string sourceDatabaseName,
             ServerConnection destServerConnection, string destDatabaseName,
-            bool includeData, SqlBackupInfo backupInfo)
+            bool includeData, string mdf, SqlBackupInfo backupInfo)
         {
             //Set Source SQL Server (SQL Azure)
             Server sourceServer = new Server(sourceServerConnection);
@@ -38,6 +38,15 @@ namespace SqlAzureBakMaker
             //create the temp database on SQL IaaS
             Console.Write($"Creating Destintation DB {destDatabaseName} on {destServer.Name}.");
             destDatabase = new Database(destServer, destDatabaseName);
+
+            var fg = new FileGroup(destDatabase, "PRIMARY");
+            destDatabase.FileGroups.Add(fg);
+
+            var df = new DataFile(fg, $"{destDatabaseName}_data");
+            fg.Files.Add(df);
+            df.FileName = mdf;
+            df.IsPrimaryFile = true;
+
             destDatabase.Create();
             Console.WriteLine(" . . . Done!");
 
