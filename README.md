@@ -2,7 +2,7 @@
 This project is designed to provide a simple framework to create a .BAK File from a SQL Azure database. 
 
 ##How it works
-The project utilized a bit of SQL Server Management Objects (SMO) to automate the following steps:
+The project utilized a bit of SQL Server Management Objects (SMO) magic to automate the following steps:
 
 1. Create a local database on SQL IaaS
 2. Copy the schema from SQL Azure to SQL IaaS
@@ -19,5 +19,13 @@ The project utilized a bit of SQL Server Management Objects (SMO) to automate th
 6. Run this tool
 7. Destroy the D series VM and the Point in Time restore (if you created one)
 
+##How it was tested
+This project was tested against the sample AdventureWorks database that the Azure portal will inject into a new database for you. 
+
 ##Warrantee
 This code is a sample, use at own risk. Please submit a pull request if you find a bug. 
+
+## Copyright and License
+- Copyright (c) Microsoft Corporation
+- Released under the MIT License (MIT)
+- Please see LICENSE for more information.
