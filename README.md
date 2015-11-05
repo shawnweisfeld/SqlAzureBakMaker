@@ -11,17 +11,38 @@ The project utilized a bit of SQL Server Management Objects (SMO) magic to autom
 
 ##Getting Started
 
+###Setup
 1. (optional) Use Point in Time Restore to generate a copy of your transactional SQL Azure Database (https://azure.microsoft.com/en-us/blog/azure-sql-database-point-in-time-restore/)
-2. Create a D series VM in the SAME Azure Region as your SQL Azure Database (Use an image that contains SQL Server already installed)
+  * While this step is optional, making the copy off of a restored copy of the backup will ensure that the source system is not changing during the processes.  
+  * 
+2. Create a D series VM in the SAME Azure Region as your SQL Azure Database
+  * (recommended) Use an image that contains SQL Server already installed
 3. Open the port in the Azure SQL DB so that the VM can access
-4. Create a local SQL Account on that box and turn on SQL Server Authentication  (will require a restart of the SQL Service)
-5. Run this tool
-6. Destroy the D series VM and the Point in Time restore (if you created one)
+4. Create a local SQL Account on that box and turn on SQL Server Authentication
+  * This will require a restart of the SQL Service
+5. Using SSMS on the VM test that you can log into the SQL Azure Database and the Local SQL Server
 
-##Example command line to run tool
+###Run this tool
+1. Download the source from this repo, compile it
+2. Execute the following command
 SqlAzureBakMaker.exe -SourceServer "" -SourceUser "" -SourcePassword "" -SourceDatabase "" -DestinationServer "." -DestinationUser "" -DestinationPassword "" -DestinationDatabase "" -StorageAccountName "" -StorageContainer "" -StorageFileBase "" -StorageKey "" -MdfFile ""
 
-(fill in the stuff between the quotes)
+  * -SourceServer: The full server name for the source SQL Azure DB (ex. something.database.windows.net,1433)
+  * -SourceUser: The username for the source SQL Azure DB
+  * -SourcePassword: The password for the soruce SQL Azure DB
+  * -SourceDatabase: The database name for the source SQL Azure DB
+  * -DestinationServer: The destination server (this will typically be the local SQL IaaS instance that you are creating a temporary copy of your database on, this DB will be used to create the .bak file, so you can just use a ".")
+  * -DestinationUser: The username for the destination server 
+  * -DestinationPassword: The password for the destination server
+  * -DestinationDatabase: The database name you want to use on the destination server
+  * -StorageAccountName: This is the name of the storage account (note: just the name not the full domain)
+  * -StorageContainer: This is the name of the conatiner in the storage account you want to put the .bak file in
+  * -StorageFileBase: this will be the prefix used for teh .bak file, appended to the end will be the date the bak was created
+  * -StorageKey: the key for the storage account
+  * -MdfFile: the full path and name to where you want to put the MDF file on the IaaS VM (NOTE: put this somewhere on the D drive if you are using a D Series VM since it is an SSD)
+
+###Cleanup
+1. Destroy the D series VM and the Point in Time restored SQL Azure DB (if you created one)
 
 ##How it was tested
 This project was tested against the sample AdventureWorks database that the Azure portal will inject into a new database for you. 
