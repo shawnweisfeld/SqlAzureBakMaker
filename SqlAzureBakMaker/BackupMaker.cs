@@ -46,6 +46,8 @@ namespace SqlAzureBakMaker
             fg.Files.Add(df);
             df.FileName = mdf;
             df.IsPrimaryFile = true;
+            df.Growth = 10;
+            df.GrowthType = FileGrowthType.Percent;
 
             destDatabase.Create();
             Console.WriteLine(" . . . Done!");
