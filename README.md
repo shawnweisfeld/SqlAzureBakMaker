@@ -34,6 +34,7 @@ SqlAzureBakMaker.exe -SourceServer "" -SourceUser "" -SourcePassword "" -SourceD
   * -DestinationUser: The username for the destination server 
   * -DestinationPassword: The password for the destination server
   * -DestinationDatabase: The database name you want to use on the destination server
+    * CAUTION: If this database already exits it will be dropped!
   * -StorageAccountName: This is the name of the storage account (note: just the name not the full domain)
   * -StorageContainer: This is the name of the conatiner in the storage account you want to put the .bak file in
   * -StorageFileBase: this will be the prefix used for the .bak file, appended to the end will be the date the bak was created
