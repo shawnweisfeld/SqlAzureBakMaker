@@ -42,7 +42,8 @@ SqlAzureBakMaker.exe -SourceServer "" -SourceUser "" -SourcePassword "" -SourceD
   * -MdfFile: the full path and name to where you want to put the MDF file on the IaaS VM (NOTE: put this somewhere on the D drive if you are using a D Series VM since it is an SSD)
 
 ###Cleanup
-1. Destroy the D series VM and the Point in Time restored SQL Azure DB (if you created one)
+1. Destroy the D series VM (you might just want to shut it down if you plan on doing this freqently)
+2. Destroy the Point in Time restored SQL Azure DB (if you created one)
 
 ##How it was tested
 This project was tested against the sample AdventureWorks database that the Azure portal will inject into a new database for you. 
