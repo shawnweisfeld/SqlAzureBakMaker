@@ -17,7 +17,7 @@ The project utilized a bit of SQL Server Management Objects (SMO) magic to autom
 2. Create a D series VM in the SAME Azure Region as your SQL Azure Database
   * (recommended) Use an image that contains SQL Server already installed
 3. Open the port in the Azure SQL DB so that the VM can access
-4. Create a local SQL Account on that box and turn on SQL Server Authentication
+4. Create a local SQL Account on your VM and turn on SQL Server Authentication
   * This will require a restart of the SQL Service
 5. Using SSMS on the VM test that you can log into the SQL Azure Database and the Local SQL Server
 
