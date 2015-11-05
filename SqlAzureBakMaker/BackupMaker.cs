@@ -10,41 +10,38 @@ namespace SqlAzureBakMaker
 {
     public class BackupMaker
     {
-        public static ServerConnection CreateConnection(string instance, string name, string password)
+        public static void CopyDatabase(MyArgs parms)
         {
-            return new ServerConnection(instance, name, password);
-        }
-        public static void CopyDatabase(
-            ServerConnection sourceServerConnection, string sourceDatabaseName,
-            ServerConnection destServerConnection, string destDatabaseName,
-            bool includeData, string mdf, SqlBackupInfo backupInfo)
-        {
+            //remove trailing slash on the path if provided by user
+            if (parms.PathToLocalMdf.EndsWith("\\"))
+                parms.PathToLocalMdf = parms.PathToLocalMdf.Substring(0, parms.PathToLocalMdf.Length - 1);
+
             //Set Source SQL Server (SQL Azure)
-            Server sourceServer = new Server(sourceServerConnection);
-            Database sourceDatabase = sourceServer.Databases[sourceDatabaseName];
+            Server sourceServer = new Server(new ServerConnection(parms.SourceServer, parms.SourceUser, parms.SourcePassword));
+            Database sourceDatabase = sourceServer.Databases[parms.SourceDatabase];
 
             //Set Destination SQL Server (SQL IaaS)
-            Server destServer = new Server(destServerConnection);
+            Server destServer = new Server(new ServerConnection(parms.DestinationServer, parms.DestinationUser, parms.DestinationPassword));
             Database destDatabase = null;
 
             //Drop the detination database if it exits
-            if (destServer.Databases.Contains(destDatabaseName))
+            if (destServer.Databases.Contains(parms.DestinationDatabase))
             {
-                Console.Write($"Destintation DB {destDatabaseName} on {destServer.Name} Exists. Dropping.");
-                destServer.KillDatabase(destDatabaseName);
+                Console.Write($"Destintation DB {parms.DestinationDatabase} on {destServer.Name} Exists. Dropping.");
+                destServer.KillDatabase(parms.DestinationDatabase);
                 Console.WriteLine(" . . . Done!");
             }
 
             //create the temp database on SQL IaaS
-            Console.Write($"Creating Destintation DB {destDatabaseName} on {destServer.Name}.");
-            destDatabase = new Database(destServer, destDatabaseName);
+            Console.Write($"Creating Destintation DB {parms.DestinationDatabase} on {destServer.Name}.");
+            destDatabase = new Database(destServer, parms.DestinationDatabase);
 
             var fg = new FileGroup(destDatabase, "PRIMARY");
             destDatabase.FileGroups.Add(fg);
 
-            var df = new DataFile(fg, $"{destDatabaseName}_data");
+            var df = new DataFile(fg, $"{parms.DestinationDatabase}_data");
             fg.Files.Add(df);
-            df.FileName = mdf;
+            df.FileName = $"{parms.PathToLocalMdf}\\{parms.DestinationDatabase}.mdf";
             df.IsPrimaryFile = true;
             df.Growth = 10;
             df.GrowthType = FileGrowthType.Percent;
@@ -67,10 +64,10 @@ namespace SqlAzureBakMaker
             transfer.Options.ClusteredIndexes = true;
             transfer.Options.Default = true;
             transfer.Options.DriAll = true;
-            transfer.CopyData = includeData;
+            transfer.CopyData = true;
 
-            transfer.DestinationServer = destServerConnection.ServerInstance;
-            transfer.DestinationDatabase = destDatabaseName;
+            transfer.DestinationServer = parms.DestinationServer;
+            transfer.DestinationDatabase = parms.DestinationDatabase;
 
             transfer.TransferData();
 
@@ -85,16 +82,18 @@ namespace SqlAzureBakMaker
             }
 
             Credential credential = new Credential(destServer, "BackupCred");
-            credential.Create(backupInfo.StorageAccountName, backupInfo.StorageKey);
+            credential.Create(parms.StorageAccountName, parms.StorageKey);
             Console.WriteLine(" Complete!");
+
+            string storageEndpoint = $"https://{parms.StorageAccountName}.{parms.StorageEndpointBase}/{parms.StorageContainer}/{parms.StorageFileBase}-{DateTime.UtcNow:yyyy-MM-dd-HH-mm}.bak";
 
             //Perform the backup from SQL IaaS to Azure Blob
             //https://msdn.microsoft.com/en-us/library/dn435916.aspx
             Console.WriteLine("Starting Backup...");
             Backup backup = new Backup();
             backup.Action = BackupActionType.Database;
-            backup.Database = destDatabaseName;
-            backup.Devices.Add(new BackupDeviceItem(backupInfo.StorageEndpoint, DeviceType.Url, "BackupCred"));
+            backup.Database = parms.DestinationDatabase;
+            backup.Devices.Add(new BackupDeviceItem(storageEndpoint, DeviceType.Url, "BackupCred"));
             backup.CredentialName = "BackupCred";
             backup.Incremental = false;
             backup.SqlBackup(destServer);

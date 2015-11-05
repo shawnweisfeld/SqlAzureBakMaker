@@ -40,6 +40,9 @@ namespace SqlAzureBakMaker
         [ArgRequired(PromptIfMissing = true)]
         public string StorageContainer { get; set; }
 
+        [ArgDefaultValue("blob.core.windows.net")]
+        public string StorageEndpointBase { get; set; }
+
         [ArgRequired(PromptIfMissing = true)]
         public string StorageFileBase { get; set; }
 
@@ -47,7 +50,7 @@ namespace SqlAzureBakMaker
         public string StorageKey { get; set; }
 
         [ArgRequired(PromptIfMissing = true)]
-        public string MdfFile { get; set; }
+        public string PathToLocalMdf { get; set; }
 
 
     }

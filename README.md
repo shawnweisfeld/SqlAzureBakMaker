@@ -24,7 +24,7 @@ The project utilized a bit of SQL Server Management Objects (SMO) magic to autom
 ###Run this tool
 1. Download the source from this repo, compile it
 2. Execute the following command
-SqlAzureBakMaker.exe -SourceServer "" -SourceUser "" -SourcePassword "" -SourceDatabase "" -DestinationServer "." -DestinationUser "" -DestinationPassword "" -DestinationDatabase "" -StorageAccountName "" -StorageContainer "" -StorageFileBase "" -StorageKey "" -MdfFile ""
+SqlAzureBakMaker.exe -SourceServer "" -SourceUser "" -SourcePassword "" -SourceDatabase "" -DestinationServer "." -DestinationUser "" -DestinationPassword "" -DestinationDatabase "" -StorageAccountName "" -StorageContainer "" -StorageFileBase "" -StorageKey "" -PathToLocalMdf ""
 
   * -SourceServer: The full server name for the source SQL Azure DB (ex. something.database.windows.net,1433)
   * -SourceUser: The username for the source SQL Azure DB
@@ -39,8 +39,9 @@ SqlAzureBakMaker.exe -SourceServer "" -SourceUser "" -SourcePassword "" -SourceD
   * -StorageContainer: This is the name of the conatiner in the storage account you want to put the .bak file in
   * -StorageFileBase: this will be the prefix used for the .bak file, appended to the end will be the date the bak was created
   * -StorageKey: the key for the storage account
-  * -MdfFile: the full path and name to where you want to put the MDF file on the IaaS VM (NOTE: put this somewhere on the D drive if you are using a D Series VM since it is an SSD)
-
+  * -PathToLocalMdf: the path to where you want to put the MDF file on the IaaS VM (NOTE: put this somewhere on the D drive if you are using a D Series VM since it is an SSD)
+  * -StorageEndpointBase: (optional) use this to override the default storage endpoint base (blob.core.windows.net) if you are not running on Azure Commercial
+  
 ###Cleanup
 1. Destroy the D series VM (you might just want to shut it down if you plan on doing this freqently)
 2. Destroy the Point in Time restored SQL Azure DB (if you created one)

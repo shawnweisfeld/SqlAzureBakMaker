@@ -17,18 +17,7 @@ namespace SqlAzureBakMaker
             Console.WriteLine("Starting");
             var sw = new Stopwatch();
             sw.Start();
-            BackupMaker.CopyDatabase(
-                BackupMaker.CreateConnection(parms.SourceServer, parms.SourceUser, parms.SourcePassword), parms.SourceDatabase,
-                BackupMaker.CreateConnection(parms.DestinationServer, parms.DestinationUser, parms.DestinationPassword), parms.DestinationDatabase,
-                true,
-                parms.MdfFile,
-                new SqlBackupInfo()
-                {
-                    StorageAccountName = parms.StorageAccountName,
-                    StorageContainer = parms.StorageContainer,
-                    StorageFile = $"{parms.StorageFileBase}-{DateTime.UtcNow:yyyy-MM-dd-HH-mm}.bak",
-                    StorageKey = parms.StorageKey
-                });
+            BackupMaker.CopyDatabase(parms);
             sw.Stop();
             Console.WriteLine($"Done in {sw.Elapsed.TotalMinutes:N} minutes");
             Console.ReadKey();
