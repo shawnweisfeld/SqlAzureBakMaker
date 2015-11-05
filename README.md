@@ -36,7 +36,7 @@ SqlAzureBakMaker.exe -SourceServer "" -SourceUser "" -SourcePassword "" -SourceD
   * -DestinationDatabase: The database name you want to use on the destination server
   * -StorageAccountName: This is the name of the storage account (note: just the name not the full domain)
   * -StorageContainer: This is the name of the conatiner in the storage account you want to put the .bak file in
-  * -StorageFileBase: this will be the prefix used for teh .bak file, appended to the end will be the date the bak was created
+  * -StorageFileBase: this will be the prefix used for the .bak file, appended to the end will be the date the bak was created
   * -StorageKey: the key for the storage account
   * -MdfFile: the full path and name to where you want to put the MDF file on the IaaS VM (NOTE: put this somewhere on the D drive if you are using a D Series VM since it is an SSD)
 
