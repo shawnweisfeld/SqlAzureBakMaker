@@ -13,8 +13,7 @@ The project utilized a bit of SQL Server Management Objects (SMO) magic to autom
 
 ###Setup
 1. (optional) Use Point in Time Restore to generate a copy of your transactional SQL Azure Database (https://azure.microsoft.com/en-us/blog/azure-sql-database-point-in-time-restore/)
-  * While this step is optional, making the copy off of a restored copy of the backup will ensure that the source system is not changing during the processes.  
-  * 
+  * While this step is optional, using a restored copy of the soruce database will ensure that the source system is not changing during the processes and reduce the impact that this process will have on your source system.  
 2. Create a D series VM in the SAME Azure Region as your SQL Azure Database
   * (recommended) Use an image that contains SQL Server already installed
 3. Open the port in the Azure SQL DB so that the VM can access
