@@ -1,6 +1,9 @@
 # SqlAzureBakMaker
 This project is designed to provide a simple framework to create a .BAK File from a SQL Azure database. 
 
+##Native Support?
+The platform doesn't have native support to create .bak files from SQL Azure databases, today. If you would like to see native support please up vote it here: https://feedback.azure.com/forums/217321-sql-database/suggestions/10460739-backup-restore-to-from-bak-file
+
 ##How it works
 The project utilized a bit of SQL Server Management Objects (SMO) magic to automate the following steps:
 
